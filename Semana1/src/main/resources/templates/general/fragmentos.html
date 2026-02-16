@@ -18,8 +18,10 @@
 
         <!-- Font Awesome 7 (CORRECTO) -->
         <link th:href="@{/webjars/font-awesome/css/all.min.css}" rel="stylesheet"/>
-        <script th:src="@{/js/rutinas.js}"></script>
 
+        <!-- JS -->
+        <script th:src="@{/js/rutinas.js}"></script>
+        
         <!-- jQuery -->
         <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 
@@ -140,7 +142,15 @@
             </div>
         </section>
     </header>
- <section th:fragment="mostrarToast">
+
+    <!-- ================= FRAGMENTO FOOTER ================= -->
+    <footer th:fragment="footer" class="p-2 mt-5 bg-info text-white">
+        <p class="lead text-center">
+            [[#{plantilla.derechos}]] &copy;
+        </p>
+    </footer>
+    <!-- ================= FRAGMENTO MostrarToast ================= -->
+        <section th:fragment="mostrarToast">
             <div aria-live="polite" aria-atomic="true" 
                  class="position-fixed top-50 start-50 translate-middle" style="z-index: 1080;">                
                 <div th:if="${error}" class="toast show"
@@ -177,13 +187,5 @@
                 </div>
             </div>
         </section>
-    <!-- ================= FRAGMENTO FOOTER ================= -->
-    <footer th:fragment="footer" class="p-2 mt-5 bg-info text-white">
-        <p class="lead text-center">
-            [[#{plantilla.derechos}]] &copy;
-        </p>
-    </footer>
-    
-   
     </body>
 </html>
