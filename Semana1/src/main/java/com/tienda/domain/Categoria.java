@@ -9,11 +9,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -71,6 +73,19 @@ public class Categoria implements Serializable {
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+   
+      // Relación de uno a muchos con la clase Producto
+    // Sin "cascade" ni "orphanRemoval" para evitar la propagación de operaciones.
+    @OneToMany(mappedBy = "categoria")
+    private List<Producto> productos;
+    
+    public List<Producto> getProductos() {
+    return productos;
+    }
+    
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 }
  
