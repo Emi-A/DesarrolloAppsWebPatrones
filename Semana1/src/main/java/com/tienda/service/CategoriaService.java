@@ -3,8 +3,10 @@ package com.tienda.service;
 import com.tienda.domain.Categoria;
 import com.tienda.repository.CategoriaRepository;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,5 +66,27 @@ public class CategoriaService {
             // Lanza una nueva excepción para encapsular el problema de integridad de datos
             throw new IllegalStateException("No se puede eliminar la categoria. Tiene datos asociados.", e);
         }
+    }
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaDerivada(long cantidadMinProductos, String textoDescripcion) {
+        var lista = categoriaRepository.findByActivoTrueAndDescripcionContainingIgnoreCase(textoDescripcion);
+
+        return lista.stream()
+                .filter(c -> c.getProductos() != null)
+                .filter(c -> c.getProductos().stream().filter(p -> p.isActivo()).count() >= cantidadMinProductos)
+                .sorted(Comparator.comparingLong(
+                        (Categoria c) -> c.getProductos().stream().filter(p -> p.isActivo()).count()
+                ).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaJPQL(long cantidadMinProductos, String textoDescripcion) {
+        return categoriaRepository.consultaJPQL(cantidadMinProductos, textoDescripcion);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Categoria> consultaSQL(long cantidadMinProductos, String textoDescripcion) {
+        return categoriaRepository.consultaSQL(cantidadMinProductos, textoDescripcion);
     }
 }

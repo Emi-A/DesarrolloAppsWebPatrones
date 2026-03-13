@@ -1,6 +1,5 @@
 package com.tienda.domain;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,8 +22,6 @@ public class Producto implements Serializable {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    //private Integer idCategoria;
-
     @Column(nullable = false, length = 50)
     private String descripcion;
 
@@ -41,6 +38,9 @@ public class Producto implements Serializable {
 
     private boolean activo;
 
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private Categoria categoria;
 
     public Integer getIdProducto() {
         return idProducto;
@@ -50,6 +50,38 @@ public class Producto implements Serializable {
         this.idProducto = idProducto;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDetalle() {
+        return detalle;
+    }
+
+    public void setDetalle(String detalle) {
+        this.detalle = detalle;
+    }
+
+    public BigDecimal getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
+    }
+
+    public Integer getExistencias() {
+        return existencias;
+    }
+
+    public void setExistencias(Integer existencias) {
+        this.existencias = existencias;
+    }
+
     public String getRutaImagen() {
         return rutaImagen;
     }
@@ -57,7 +89,20 @@ public class Producto implements Serializable {
     public void setRutaImagen(String rutaImagen) {
         this.rutaImagen = rutaImagen;
     }
-    @ManyToOne
-    @JoinColumn(name = "id_categoria")
-    private Categoria categoria;
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 }
