@@ -57,3 +57,150 @@
         </div>
     </div>
 </section>
+<!-- fragmento 3 para mostrar los 3 formularios de las consultas -->
+<section th:fragment="consultas" class="container py-3">
+    <div class="row">
+        <div class="col-12">
+            <h4>Consultas avanzadas de Producto</h4>
+        </div>
+
+        <div class="col-md-4 mb-3"
+             th:replace="~{consultas/fragmentos :: formProducto('primary','Consultas Derivadas','/consultas/producto/derivada')}"></div>
+
+        <div class="col-md-4 mb-3"
+             th:replace="~{consultas/fragmentos :: formProducto('warning','Consultas JPQL','/consultas/producto/jpql')}"></div>
+
+        <div class="col-md-4 mb-3"
+             th:replace="~{consultas/fragmentos :: formProducto('success','Consultas Nativas','/consultas/producto/sql')}"></div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <h4>Consultas avanzadas de Categoría</h4>
+        </div>
+
+        <div class="col-md-4 mb-3"
+             th:replace="~{consultas/fragmentos :: formCategoria('primary','Categoría Derivada','/consultas/categoria/derivada')}"></div>
+
+        <div class="col-md-4 mb-3"
+             th:replace="~{consultas/fragmentos :: formCategoria('warning','Categoría JPQL','/consultas/categoria/jpql')}"></div>
+
+        <div class="col-md-4 mb-3"
+             th:replace="~{consultas/fragmentos :: formCategoria('success','Categoría SQL','/consultas/categoria/sql')}"></div>
+    </div>
+</section>
+
+<div th:fragment="formProducto(colorForm, textoForm, urlForm)">
+    <form method="post" th:action="@{${urlForm}}" class="was-validated">
+        <div class="card p-2">
+            <div class="card-header text-center text-white" th:classappend="${'bg-' + colorForm}">
+                <h5>[[${textoForm}]]</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label>Precio mínimo</label>
+                    <input type="number" step="0.01" name="precioMin" th:value="${precioMin}"
+                           class="form-control" min="0" required/>
+                </div>
+                <div class="mb-3">
+                    <label>Precio máximo</label>
+                    <input type="number" step="0.01" name="precioMax" th:value="${precioMax}"
+                           class="form-control" min="0" required/>
+                </div>
+                <div class="mb-3">
+                    <label>Existencias mínimas</label>
+                    <input type="number" name="existenciasMin" th:value="${existenciasMin}"
+                           class="form-control" min="0" required/>
+                </div>
+                <div class="mb-3">
+                    <label>Descripción categoría</label>
+                    <input type="text" name="descripcionCategoria" th:value="${descripcionCategoria}"
+                           class="form-control" required/>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn text-white" th:classappend="${'btn-' + colorForm}">
+                    <i class="fa-solid fa-magnifying-glass"></i> [[${textoForm}]]
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:fragment="formCategoria(colorForm, textoForm, urlForm)">
+    <form method="post" th:action="@{${urlForm}}" class="was-validated">
+        <div class="card p-2">
+            <div class="card-header text-center text-white" th:classappend="${'bg-' + colorForm}">
+                <h5>[[${textoForm}]]</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label>Cantidad mínima de productos</label>
+                    <input type="number" name="cantidadMinProductos" th:value="${cantidadMinProductos}"
+                           class="form-control" min="1" required/>
+                </div>
+                <div class="mb-3">
+                    <label>Texto descripción</label>
+                    <input type="text" name="textoDescripcion" th:value="${textoDescripcion}"
+                           class="form-control" required/>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type="submit" class="btn text-white" th:classappend="${'btn-' + colorForm}">
+                    <i class="fa-solid fa-magnifying-glass"></i> [[${textoForm}]]
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<section th:fragment="tablaCategorias" class="container py-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Resultado de categorías</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Activo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${categoriasResultado}">
+                        <td th:text="${c.idCategoria}"></td>
+                        <td th:text="${c.descripcion}"></td>
+                        <td th:text="${c.activo ? 'Sí' : 'No'}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<!-- fragmento 4 para mostrar el formulario factorizado -->
+<div th:fragment='formConsulta(colorForm, textoForm, urlForm)'>
+    <form method="post" th:action='@{${urlForm}}' class='was-validated'>
+        <div class='card p-2'>
+            <div class="card-header text-center text-white" th:classappend="${'bg-'+colorForm}">
+                <h5>[[${textoForm}]]</h5>
+            </div>
+            <div class="card-body">
+                <div class='mb-3'>
+                    <label>[[#{consultas.precio.inferior}]]</label>
+                    <input type="number" name='precioInf' th:value='${precioInf}'
+                           class='form-control' min="0" required/>
+                </div>
+                <div class='mb-3'>
+                    <label>[[#{consultas.precio.superior}]]</label>
+                    <input type="number" name='precioSup' th:value='${precioSup}'
+                           class='form-control' min="0" required/>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <button type='submit' class='btn text-white' th:classappend="${'btn-'+colorForm}">
+                    <i class='fa-solid fa-magnifying-glass'></i> [[${textoForm}]]
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
